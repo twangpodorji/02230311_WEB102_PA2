@@ -28,7 +28,7 @@ bun run dev
 open http://localhost:3000
 
 
-## Pokémon Endpoints.
+## Pokémon Endpoints
 ### Fetch Pokémon Data from PokeAPI
 
     URL: /pokemon/:name
