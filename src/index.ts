@@ -23,7 +23,7 @@ app.use(
   })
 );
 
-// Rate limiting 
+// Rate limiting
 // Enable CORS for all routes
 app.use("/*", cors());
 
@@ -47,19 +47,19 @@ app.post("/register", async (c) => {
 
   const bcryptHash = await Bun.password.hash(password, {
     algorithm: "bcrypt", // The algorithm to use for hashing
-    cost: 4, // The cost of the hash algorithm 
+    cost: 4, // The cost of the hash algorithm
   });
 
   try {
-    // creating the user in the database using the email and password that is passed in the body 
+    // creating the user in the database using the email and password that is passed in the body
     const user = await prisma.user.create({
       data: {
         email: email,
         hashedPassword: bcryptHash,
       },
     });
-    
-    // returning the message that if the user is created successfully not and 
+
+    // returning the message that if the user is created successfully not and
     //if it is created earlier then it will return the message that email already exists
     return c.json({ message: `${user.email} is created successfully` });
   } catch (e) {
@@ -69,19 +69,21 @@ app.post("/register", async (c) => {
       }
     }
     // if the user is not created successfully then it will return the message that internal server error
-    throw new HTTPException(500, { message: "There Is A Internal Server Error" });
+    throw new HTTPException(500, {
+      message: "There Is A Internal Server Error",
+    });
   }
 });
 
 // endpoint for the login page to authencate the user
 app.post("/login", async (c) => {
   try {
-    // passing the email and password to the body for login 
+    // passing the email and password to the body for login
     const body = await c.req.json();
     const email = body.email;
     const password = body.password;
 
-    // fetching the user information from the database using email 
+    // fetching the user information from the database using email
     const user = await prisma.user.findUnique({
       where: { email: email },
       select: { id: true, hashedPassword: true },
@@ -119,7 +121,9 @@ app.post("/login", async (c) => {
     if (error instanceof HTTPException) {
       throw error;
     } else {
-      throw new HTTPException(500, { message: "There Is A Internal Server Error" });
+      throw new HTTPException(500, {
+        message: "There Is A Internal Server Error",
+      });
     }
   }
 });
@@ -150,7 +154,6 @@ app.get("/pokemon/:name", async (c) => {
   }
 });
 
-
 // endpoint to catch pokemon and save it to the database
 app.post("/pokemon/catch", async (c) => {
   try {
@@ -163,7 +166,7 @@ app.post("/pokemon/catch", async (c) => {
     // fetching the pokemon name from the body
     const body = await c.req.json();
     const pokemonName = body.name;
-    
+
     // if the pokemon name is not found then it will return the message that pokemon name is required
     if (!pokemonName) {
       throw new HTTPException(400, { message: "Pokemon name is required" });
