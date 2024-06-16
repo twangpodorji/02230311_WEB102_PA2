@@ -39,7 +39,7 @@ open http://localhost:3000
       "data": {  "PokeAPI response data"  }
     }
 
-### Catch Pokémon (Protected)
+### Catch Pokémon 
 
     URL: /protected/catch
     Method: POST
@@ -64,7 +64,7 @@ Response:
     }
 }
 
-### Release Pokémon (Protected)
+### Release Pokémon 
 
     URL: /protected/release/:id
     Method: DELETE
@@ -77,7 +77,7 @@ Response:
     "message": "Pokemon released"
     }
 
-Get Caught Pokémon (Protected)
+Get Caught Pokémon 
 
     URL: /protected/caught
     Method: GET
@@ -97,7 +97,7 @@ Response:
             "id": "f4e0b859-1a46-4fab-874b-f8aecc0ca0f3",
             "name": "mew",
         }
-        }
+        } 
     ]
     }
 

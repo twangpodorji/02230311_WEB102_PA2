@@ -201,7 +201,7 @@ app.post("/pokemon/catch", async (c) => {
 });
 
 // endpoint to release the pokemon from the database
-app.delete("/pokemon/release/:id", async (c) => {
+app.delete("/pokemon/delete/:id", async (c) => {
   const payload = c.get("jwtPayload");
   if (!payload) {
     throw new HTTPException(401, { message: "YOU ARE UNAUTHORIZED" });
