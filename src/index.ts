@@ -7,6 +7,7 @@ import { sign } from "hono/jwt";
 import axios from "axios";
 import { jwt } from "hono/jwt";
 import type { JwtVariables } from "hono/jwt";
+import { rateLimiter } from "hono-rate-limiter";
 
 type Variables = JwtVariables; // Defining the type of the variables to be used in the app
 
@@ -22,6 +23,20 @@ app.use(
   })
 );
 
+// Rate limiting 
+// Enable CORS for all routes
+app.use("/*", cors());
+
+// Create a rate limiter middleware
+const limiter = rateLimiter({
+  windowMs: 1 * 60 * 1000, // rate limiter for 1 minute
+  limit: 2, // 2 requests per minute for each IP
+  standardHeaders: "draft-6", // draft-6: RateLimit-* headers; draft-7: combined RateLimit header
+  keyGenerator: (c) => c.req.header("X-Forwarded-For") || "default",
+});
+
+// Apply the rate limiting middleware to all requests
+app.use(limiter);
 
 // Initializing the end points
 // endpoint for the registion
@@ -46,15 +61,15 @@ app.post("/register", async (c) => {
     
     // returning the message that if the user is created successfully not and 
     //if it is created earlier then it will return the message that email already exists
-    return c.json({ message: `${user.email} created successfully` });
+    return c.json({ message: `${user.email} is created successfully` });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === "P2002") {
-        return c.json({ message: "Email already exists" });
+        return c.json({ message: " This Email already exists" });
       }
     }
     // if the user is not created successfully then it will return the message that internal server error
-    throw new HTTPException(500, { message: "Internal Server Error" });
+    throw new HTTPException(500, { message: "There Is A Internal Server Error" });
   }
 });
 
@@ -104,7 +119,7 @@ app.post("/login", async (c) => {
     if (error instanceof HTTPException) {
       throw error;
     } else {
-      throw new HTTPException(500, { message: "Internal Server Error" });
+      throw new HTTPException(500, { message: "There Is A Internal Server Error" });
     }
   }
 });
@@ -223,14 +238,14 @@ app.get("/pokemon/caught", async (c) => {
     });
 
     if (!caughtPokemon.length) {
-      return c.json({ message: "No Pokémon found." });
+      return c.json({ message: "Your Pokémon Not found." });
     }
 
     return c.json({ data: caughtPokemon });
   } catch (error: unknown) {
     console.error("Error fetching caught Pokémon:", error);
     return c.json(
-      { message: "An error occurred while fetching caught Pokémon" },
+      { message: "An error occurred while fetching caught Pokémon details" },
       500
     );
   }

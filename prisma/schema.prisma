@@ -22,7 +22,7 @@ model User {
 model Pokemon {
   id            String         @id @default(uuid())
   name          String         @unique
-  caughtPokemon CaughtPokemon[]
+  caughtPokemons CaughtPokemon[]
 }
 
 // caught pokemon model to store the caught pokemon information and the user who caught it
