@@ -32,5 +32,4 @@ model CaughtPokemon {
   user      User     @relation(fields: [userId], references: [id])
   pokemonId String
   pokemon   Pokemon  @relation(fields: [pokemonId], references: [id])
-  caughtAt  DateTime @default(now())
 }
