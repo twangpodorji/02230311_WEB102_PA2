@@ -24,7 +24,7 @@ app.use(
 
 const limiter = rateLimiter({
   windowMs: 1 * 60 * 1000,
-  limit: 2,
+  limit: 10,
   standardHeaders: "draft-6",
   keyGenerator: (c) => c.req.header("X-Forwarded-For") || "default",
 });

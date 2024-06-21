@@ -46,168 +46,84 @@ npm run dev
 
 # API Endpoints
 
-## User Endpoints
+1. User Endpoints
+- Sign Up: POST /signup
+- Request body:
 
-1. Get all users
-- Method: GET
-- URL: /users
-- Description: Fetches all users.
-
-2. Get a user by ID
-- Method: GET
-- URL: /users
-- Description: Fetches all users.
-
-3. Create a user (Signup)
-- Method: POST
-- URL: /signup
-- Description: Creates a new user.
-- Body:
 ```json
 {
   "email": "user@example.com",
-  "password": "yourpassword"
+  "password": "password"
 }
 ```
-
-4. Update a user by ID
-
-- Method: PUT
-- URL: /users/:id
-- Description: Updates a user by their ID.
-- Parameters: Replace :id with the actual user ID.
-- Body: Use the JSON format for the fields you want to update:
-json
+2. Sign In: POST /signin
+- Request body:
 ```json
 {
-  "email": "newemail@exampl.com",
-  "hashedPassword": "newhashedpassword"
+  "email": "user@example.com",
+  "password": "password"
 }
 ```
+- Get All Users: GET /users
 
-5. Delete a user by ID
+- Get User by ID: GET /users/:id
 
-- Method: DELETE
-- URL: /users/:id
-- Description: Deletes a user by their ID.
-- Parameters: Replace :id with the actual user ID.
+- Update User: PUT /users/:id
 
-## Pokemon Endpoints
-
-1. Get all pokemons
-
-- Method: GET
-- URL: /pokemons
-- Description: Fetches all pokemons.
-
-Get a pokemon by ID
-
-2. Method: GET
-- URL: /pokemons/:id
-- Description: Fetches a pokemon by their ID.
-- Parameters: Replace :id with the actual pokemon ID.
-
-3. Create a pokemon
-
-- Method: POST
-- URL: /pokemons
-- Description: Creates a new pokemon.
-- Body
-
-```json
+- Request body:
+``` json
 {
-  "name": "Pikachu"
+  "email": "new-email@example.com",
+  "hashedPassword": "newpassword"
 }
 ```
+- Delete User: DELETE /users/:id
 
-4. Update a pokemon by ID
+## Pokémon Endpoints
 
-- Method: PUT
-- URL: /pokemons/:id
-- Description: Updates a pokemon by their ID.
-- Parameters: Replace :id with the actual pokemon ID.
-- Body: Use the JSON format for the fields you want to update:
-```json
+- Get Pokémon by Name: GET /pokemon/:name
+
+- Update Pokémon: PUT /pokemon/:name
+
+- Request body:
+
+``` 
 {
-  "name": "Ditto"
+  "name": "new-name"
 }
 ```
+- Delete Pokémon: DELETE /pokemon/:name
 
-5. Delete a pokemon by ID
+## Caught Pokémon Endpoints
 
-- Method: DELETE
-- URL: /pokemons/:id
-- Description: Deletes a pokemon by their ID.
-- Parameters: Replace :id with the actual pokemon ID.
+- Get All Caught Pokémon for a User: GET /caught-pokemons/:userId
 
-## CaughtPokemon Endpoints
+- Catch a Pokémon: POST /caught-pokemons
 
-1. Get all caught pokemons
+- Request body:
 
-- Method: GET
-- URL: /caught-pokemons
-- Description: Fetches all caught pokemons.
+- Release a Caught Pokémon: DELETE /caught-pokemons/:id
 
-2. Get a caught pokemon by ID
+- Get All Caught Pokémon: GET /caught-pokemons
 
-- Method: GET
-- URL: /caught-pokemons/:id
-- Description: Fetches a caught pokemon by their ID.
-- Parameters: Replace :id with the actual caught pokemon ID.
+- Get Caught Pokémon by ID: GET /caught-pokemons/:id
 
-3. Create a caught pokemon
+- Update Caught Pokémon: PUT /caught-pokemons/:id
 
-- Method: POST
-- URL: /caught-pokemons
-- Description: Creates a new caught pokemon.
-Body:
-```json
-{
-  "userId": "user-id-here",
-  "pokemonId": "pokemon-id-here"
-}
+- Request body:
 ```
-
-4. Update a caught pokemon by ID
-
-- Method: PUT
-- URL: /caught-pokemons/:id
-- Description: Updates a caught pokemon by their ID.
-- Parameters: Replace :id with the actual caught pokemon ID.
-- Body: Use the JSON format for the fields you want to update:
-```json
 {
   "userId": "new-user-id",
   "pokemonId": "new-pokemon-id"
 }
 ```
+- Delete Caught Pokémon: DELETE /caught-pokemons/:id
 
-5. Delete a caught pokemon by ID
+# Authentication
 
-- Method: DELETE
-- URL: /caught-pokemons/:id
-- Description: Deletes a caught pokemon by their ID.
-- Parameters: Replace :id with the actual caught pokemon ID.
+JWT authentication is used for protected routes. Include the JWT token in the Authorization header:
 
-### Authentication
-
-For endpoints that require authentication (like those under /protected/*), you need to include the JWT token in the headers of your requests:
-
-- Header Key: Authorization
-- Header Value: Bearer <your-jwt-token>
-
-To get the JWT token, you need to log in using the /signin endpoint.
-
-#### Example Login Request
-- Method: POST
-- URL: /signin
-- Body:
 ```
-{
-  "email": "user@example.com",
-  "password": "yourpassword"
-}
+Authorization: Bearer <your-token>
 ```
-After successfully logging in, you will receive a JWT token. Use this token for any authenticated requests.
-
-
+Rate limiting is applied to all requests with a limit of 10 requests per minute for each IP.
